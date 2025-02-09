@@ -1,8 +1,19 @@
+#data for amazon linux
+data "aws_ami" "amazon-2" {
+    most_recent = true
+  
+    filter {
+      name = "name"
+      values = ["amzn2-ami-hvm-*-x86_64-ebs"]
+    }
+    owners = ["amazon"]
+  }
+
 # create ec2
 
 resource "aws_instance" "serv1" {
   instance_type = "t2.micro"
-  ami = "ami-0166fe664262f664c"
+  ami = data.aws_ami.amazon-2.id
   key_name = aws_key_pair.key.key_name
   vpc_security_group_ids = [aws_security_group.sg.id]
   user_data = file("code.sh")
